@@ -1,6 +1,7 @@
 package com.awfa.potato;
 
 import com.awfa.potato.components.*;
+import com.awfa.potato.systems.RenderSystem;
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -31,6 +32,9 @@ public class PotatoGameScreen implements Screen {
 		player.add(playerPosition);
 		
 		game.engine.addEntity(player);
+		
+		RenderSystem renderSystem = new RenderSystem(game);
+		game.engine.addSystem(renderSystem);
 	}
 
 	@Override
@@ -45,10 +49,8 @@ public class PotatoGameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		game.batch.begin();
-		
-		game.batch.end();
-		
 		game.engine.update(delta);
+		game.batch.end();
 	}
 
 	@Override
