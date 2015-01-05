@@ -9,6 +9,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class RenderSystem extends EntitySystem {
 
@@ -18,9 +22,19 @@ public class RenderSystem extends EntitySystem {
 	private ComponentMapper<TextureComponent> texMap = ComponentMapper
 			.getFor(TextureComponent.class);
 	private PotatoGame game;
+	private SpriteBatch batch;
+	private OrthographicCamera camera;
 
 	public RenderSystem(PotatoGame game) {
 		this.game = game;
+		batch = new SpriteBatch();
+		camera = new OrthographicCamera();
+
+		float width = Gdx.graphics.getWidth();
+		float height = Gdx.graphics.getHeight();
+
+		camera.setToOrtho(false, width, height);
+		batch.setProjectionMatrix(camera.combined);
 	}
 
 	@Override
@@ -32,11 +46,18 @@ public class RenderSystem extends EntitySystem {
 
 	@Override
 	public void update(float deltaTime) {
+		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		camera.update();
+		
+		batch.begin();
 		for (Entity entity : entities) {
 			TextureComponent texture = texMap.get(entity);
 			PositionComponent position = posMap.get(entity);
 
-			game.batch.draw(texture.region, position.x, position.y);
+			batch.draw(texture.region, position.x, position.y);
 		}
+		batch.end();
 	}
 }
