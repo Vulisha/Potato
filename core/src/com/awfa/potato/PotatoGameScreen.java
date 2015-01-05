@@ -3,25 +3,13 @@ package com.awfa.potato;
 import com.awfa.potato.components.*;
 import com.awfa.potato.systems.RenderSystem;
 import com.badlogic.ashley.core.*;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class PotatoGameScreen implements Screen {
 	private final PotatoGame game;
-	private OrthographicCamera camera;
 	
 	public PotatoGameScreen(final PotatoGame game) {
 		this.game = game;
-		camera = new OrthographicCamera();
-		
-		float width = 1280f;
-		float height = 720f;
-		camera.setToOrtho(false, width, height);
-		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
-		
 		
 		Entity player = new Entity();
 		TextureComponent playerTexture = new TextureComponent();
@@ -33,7 +21,7 @@ public class PotatoGameScreen implements Screen {
 		
 		game.engine.addEntity(player);
 		
-		RenderSystem renderSystem = new RenderSystem(game);
+		RenderSystem renderSystem = new RenderSystem();
 		game.engine.addSystem(renderSystem);
 	}
 
@@ -45,12 +33,7 @@ public class PotatoGameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		game.batch.begin();
 		game.engine.update(delta);
-		game.batch.end();
 	}
 
 	@Override
