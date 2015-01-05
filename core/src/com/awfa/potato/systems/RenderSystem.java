@@ -1,6 +1,5 @@
 package com.awfa.potato.systems;
 
-import com.awfa.potato.PotatoGame;
 import com.awfa.potato.components.PositionComponent;
 import com.awfa.potato.components.TextureComponent;
 import com.badlogic.ashley.core.ComponentMapper;
@@ -21,12 +20,10 @@ public class RenderSystem extends EntitySystem {
 			.getFor(PositionComponent.class);
 	private ComponentMapper<TextureComponent> texMap = ComponentMapper
 			.getFor(TextureComponent.class);
-	private PotatoGame game;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 
-	public RenderSystem(PotatoGame game) {
-		this.game = game;
+	public RenderSystem() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 

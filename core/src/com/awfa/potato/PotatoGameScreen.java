@@ -21,7 +21,7 @@ public class PotatoGameScreen implements Screen {
 		
 		game.engine.addEntity(player);
 		
-		RenderSystem renderSystem = new RenderSystem(game);
+		RenderSystem renderSystem = new RenderSystem();
 		game.engine.addSystem(renderSystem);
 	}
 
