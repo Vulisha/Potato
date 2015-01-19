@@ -1,6 +1,7 @@
 package com.awfa.potato.systems;
 
 import com.awfa.potato.components.PositionComponent;
+import com.awfa.potato.components.TextComponent;
 import com.awfa.potato.components.TextureComponent;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
@@ -11,21 +12,28 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class RenderSystem extends EntitySystem {
 
-	private ImmutableArray<Entity> entities;
-	private ComponentMapper<PositionComponent> posMap = ComponentMapper
-			.getFor(PositionComponent.class);
-	private ComponentMapper<TextureComponent> texMap = ComponentMapper
-			.getFor(TextureComponent.class);
+	private ImmutableArray<Entity> textureEntities;
+	private ImmutableArray<Entity> textEntities;
+	private ComponentMapper<PositionComponent> positionComponentMapper = 
+			ComponentMapper.getFor(PositionComponent.class);
+	private ComponentMapper<TextureComponent> textureComponentMapper = 
+			ComponentMapper.getFor(TextureComponent.class);
+	private ComponentMapper<TextComponent> textComponentMapper = 
+			ComponentMapper.getFor(TextComponent.class);
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
-
+	
+	private BitmapFont arial15;
+	
 	public RenderSystem() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
+		arial15 = new BitmapFont();
 
 		float width = Gdx.graphics.getWidth();
 		float height = Gdx.graphics.getHeight();
@@ -36,24 +44,34 @@ public class RenderSystem extends EntitySystem {
 
 	@Override
 	public void addedToEngine(Engine engine) {
-		Family family = Family.all(PositionComponent.class,
+		Family textureFamily = Family.all(PositionComponent.class,
 				TextureComponent.class).get();
-		entities = engine.getEntitiesFor(family);
+		Family textFamily = Family.all(PositionComponent.class,
+				TextComponent.class).get();
+		textureEntities = engine.getEntitiesFor(textureFamily);
+		textEntities = engine.getEntitiesFor(textFamily);
 	}
 
 	@Override
 	public void update(float deltaTime) {
-		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+		Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		camera.update();
 		
 		batch.begin();
-		for (Entity entity : entities) {
-			TextureComponent texture = texMap.get(entity);
-			PositionComponent position = posMap.get(entity);
+		for (Entity entity : textureEntities) {
+			TextureComponent texture = textureComponentMapper.get(entity);
+			PositionComponent position = positionComponentMapper.get(entity);
 
 			batch.draw(texture.region, position.x, position.y);
+		}
+		
+		for (Entity entity : textEntities) {
+			TextComponent text = textComponentMapper.get(entity);
+			PositionComponent position = positionComponentMapper.get(entity);
+			
+			arial15.draw(batch, text.textBody, position.x, position.y);
 		}
 		batch.end();
 	}

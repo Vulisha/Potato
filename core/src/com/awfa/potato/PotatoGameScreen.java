@@ -1,14 +1,20 @@
 package com.awfa.potato;
 
+import com.awfa.potato.messages.MessageSystem;
+import com.awfa.potato.minigames.MinigameManager;
 import com.awfa.potato.systems.RenderSystem;
 import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.Screen;
 
 public class PotatoGameScreen implements Screen {
 	private final PotatoGame game;
+	private MessageSystem messageSystem;
+	private MinigameManager minigameManager;
 	
 	public PotatoGameScreen(final PotatoGame game) {
 		this.game = game;
+		messageSystem = new MessageSystem();
+		minigameManager = new MinigameManager(messageSystem);
 		
 		Entity player = EntityFactory.createPlayer();
 		
@@ -26,6 +32,7 @@ public class PotatoGameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		minigameManager.update(delta);
 		game.engine.update(delta);
 	}
 
