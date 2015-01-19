@@ -52,7 +52,7 @@ public class MinigameManager implements MessageListener {
 				minigameTimer = 0.f;
 				messageSystem.sendMessage(Message.MINIGAME_OVER);
 			} else {
-				// TODO: call update
+				minigame.update();
 			}
 		}
 		
@@ -83,12 +83,14 @@ public class MinigameManager implements MessageListener {
 		messageSystem.sendMessage(Message.PLAYER_LOSE, extra);
 	}
 	
-	private void checkIsPlayer(Entity playerEntity) {
-		if(!playerComponentMapper.has(playerEntity)) {
-			throw new MissingComponentException(playerEntity.getId() + " is missing the player component");
-		}
+	public void awardWinToUnprocessed() {
+		// TODO award win to unprocessed players
 	}
-
+	
+	public void awardLoseToUnprocessed() {
+		// TODO award lose to unprocessed players
+	}
+	
 	@Override
 	public void recieveMessage(Message message) {
 		minigame.recieveMessage(message);
@@ -97,5 +99,11 @@ public class MinigameManager implements MessageListener {
 	@Override
 	public void recieveMessage(Message message, MessageExtra extra) {
 		minigame.recieveMessage(message, extra);
+	}
+	
+	private void checkIsPlayer(Entity playerEntity) {
+		if(!playerComponentMapper.has(playerEntity)) {
+			throw new MissingComponentException(playerEntity.getId() + " is missing the player component");
+		}
 	}
 }
