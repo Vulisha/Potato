@@ -22,7 +22,6 @@ public class PotatoGameScreen implements Screen {
 		
 		RenderSystem renderSystem = new RenderSystem();
 		game.engine.addSystem(renderSystem);
-		
 	}
 
 	@Override

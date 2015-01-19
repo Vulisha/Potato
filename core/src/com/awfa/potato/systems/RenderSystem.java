@@ -19,18 +19,17 @@ public class RenderSystem extends EntitySystem {
 
 	private ImmutableArray<Entity> textureEntities;
 	private ImmutableArray<Entity> textEntities;
-	private ComponentMapper<PositionComponent> positionMap = ComponentMapper
-			.getFor(PositionComponent.class);
-	private ComponentMapper<TextureComponent> textureMap = ComponentMapper
-			.getFor(TextureComponent.class);
-	private ComponentMapper<TextComponent> textMap = ComponentMapper
-			.getFor(TextComponent.class);
+	private ComponentMapper<PositionComponent> positionComponentMapper = 
+			ComponentMapper.getFor(PositionComponent.class);
+	private ComponentMapper<TextureComponent> textureComponentMapper = 
+			ComponentMapper.getFor(TextureComponent.class);
+	private ComponentMapper<TextComponent> textComponentMapper = 
+			ComponentMapper.getFor(TextComponent.class);
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	
 	private BitmapFont arial15;
 	
-
 	public RenderSystem() {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
@@ -62,15 +61,15 @@ public class RenderSystem extends EntitySystem {
 		
 		batch.begin();
 		for (Entity entity : textureEntities) {
-			TextureComponent texture = textureMap.get(entity);
-			PositionComponent position = positionMap.get(entity);
+			TextureComponent texture = textureComponentMapper.get(entity);
+			PositionComponent position = positionComponentMapper.get(entity);
 
 			batch.draw(texture.region, position.x, position.y);
 		}
 		
 		for (Entity entity : textEntities) {
-			TextComponent text = textMap.get(entity);
-			PositionComponent position = positionMap.get(entity);
+			TextComponent text = textComponentMapper.get(entity);
+			PositionComponent position = positionComponentMapper.get(entity);
 			
 			arial15.draw(batch, text.textBody, position.x, position.y);
 		}

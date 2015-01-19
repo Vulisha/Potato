@@ -7,7 +7,7 @@ public class MessageSystem {
 	public enum Message {
 		MINIGAME_START, MINIGAME_OVER,
 		PLAYER_CHAT,
-		PLAYER_WIN, PLAYER_LOSE
+		PLAYER_WIN, PLAYER_LOSE;
 	}
 	
 	private ObjectMap<Message, Array<MessageListener>> listenerMap;

@@ -10,15 +10,15 @@ public class EntityFactory {
 	public static Entity createPlayer() {
 		Entity player = new Entity();
 		
-		TextureComponent texComp = new TextureComponent();
-		texComp.region = PotatoAssets.playerTexture;
+		TextureComponent textureComponent = new TextureComponent();
+		textureComponent.region = PotatoAssets.playerTexture;
 		
-		PositionComponent posComp = new PositionComponent();
-		PlayerComponent playerComp = new PlayerComponent();
+		PositionComponent positionComponent = new PositionComponent();
+		PlayerComponent playerComponent = new PlayerComponent();
 		
-		player.add(texComp);
-		player.add(posComp);
-		player.add(playerComp);
+		player.add(textureComponent);
+		player.add(positionComponent);
+		player.add(playerComponent);
 		
 		return player;
 	}
