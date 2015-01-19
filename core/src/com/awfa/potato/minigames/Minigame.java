@@ -2,11 +2,18 @@ package com.awfa.potato.minigames;
 
 import com.awfa.potato.messages.MessageListener;
 
-public interface Minigame extends MessageListener {
-	public void initialize();
-	public void startAction();
-	public void endAction();
+public abstract class Minigame implements MessageListener {
+	protected MinigameManager minigameManager;
 	
-	public float getWindup();
-	public float getLength();
+	public Minigame(MinigameManager minigameManager) {
+		this.minigameManager = minigameManager;
+	}
+	
+	public abstract void initialize();
+	public abstract void startAction();
+	public void update() { }
+	public abstract void endAction();
+	
+	public abstract float getWindup();
+	public abstract float getLength();
 }
